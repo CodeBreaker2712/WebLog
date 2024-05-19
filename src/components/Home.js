@@ -1,40 +1,13 @@
-import { useEffect, useState } from 'react'
 import Bloglist from './Bloglist';
+import useFetch from '../hooks/useFetch';
 
 const Home = () => {
 
-    const [blogs, setBlogs] = useState(null)
-
-    const [isFetchPending, setIsFetchPending] = useState(true)
-
-    const [error, setError] = useState(null)
+    const {data: blogs, isFetchPending, error, setData: setBlogs} = useFetch('http://localhost:8000/blogs')
 
     const handleDelete = (id) => {
         setBlogs(blogs.filter((blog) => blog.id !== id))
     }
-
-    useEffect( () => {
-        setTimeout( () => {
-            fetch('http://localhost:8000/blogs')
-            .then(res => {
-                if(!res.ok)
-                {
-                    throw Error('Bad Request!! Resource doesn\'t exist')
-                }
-                return res.json()
-            })
-            .then(data => {
-                setError(null)
-                setBlogs(data)
-                setIsFetchPending(false)
-            })
-            .catch(err => {
-                setBlogs(null)
-                setError(err.message)
-                setIsFetchPending(false)
-            })
-        }, 1000)
-    }, [])
 
     return ( 
         <div className="home">
