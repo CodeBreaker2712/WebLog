@@ -30,7 +30,7 @@ const useFetch = (url) => {
                     setIsFetchPending(false)
                 }
             })
-        }, 1000)
+        }, 0)
 
         return () => abortController.abort()
 
